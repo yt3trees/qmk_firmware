@@ -1,6 +1,6 @@
 /*
-Copyright 2019 @foostan
-Copyright 2020 Drashna Jaelre <@drashna>
+Copyright 2012 Jun Wako <wakojun@gmail.com>
+Copyright 2015 Jack Humbert
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -18,13 +18,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-#include "config_common.h"
-
 /* USB Device descriptor parameter */
-#define VENDOR_ID       0x4653
-#define PRODUCT_ID      0x0001
+#define VENDOR_ID       0xFEED
+#define PRODUCT_ID      0x3060
 #define DEVICE_VER      0x0001
-#define MANUFACTURER    foostan
+#define MANUFACTURER    yt3trees
+#define PRODUCT         Limb44
+#define DESCRIPTION     A split keyboard with 3x6 vertically staggered keys and 4 thumb keys
 
 /* key matrix size */
 // Rows are doubled-up
@@ -50,6 +50,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /* Locking resynchronize hack */
 //#define LOCKING_RESYNC_ENABLE
 
+/* ws2812 RGB LED */
+#define RGB_DI_PIN D3
+
+#ifdef RGBLIGHT_ENABLE
+#define RGBLED_NUM 12    // Number of LEDs
+#endif
+
+#ifdef RGB_MATRIX_ENABLE
+#define RGBLED_NUM 54    // Number of LEDs
+#define DRIVER_LED_TOTAL RGBLED_NUM
+#endif
 
 /*
  * Feature disable options
@@ -68,7 +79,3 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //#define NO_ACTION_ONESHOT
 //#define NO_ACTION_MACRO
 //#define NO_ACTION_FUNCTION
-#define USE_SERIAL
-
-#define NO_ACTION_MACRO
-#define NO_ACTION_FUNCTION

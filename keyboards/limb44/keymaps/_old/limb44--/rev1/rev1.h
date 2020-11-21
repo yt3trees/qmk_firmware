@@ -1,43 +1,27 @@
-/*
-Copyright 2019 @foostan
-Copyright 2020 Drashna Jaelre <@drashna>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
 #pragma once
 
-extern uint8_t is_master;
-
 #include "limb44.h"
-#if defined(KEYBOARD_limb44_rev1_legacy)
-#    include "legacy.h"
-#elif defined(KEYBOARD_limb44_rev1_common)
-#    include "common.h"
-#endif
 
 #include "quantum.h"
-#include "split_util.h"
+
 #ifdef PROTOCOL_LUFA
-#    include "lufa.h"
+    #include "lufa.h"
+    #include "split_util.h"
 #endif
+
 #ifdef SSD1306OLED
-#    include "ssd1306.h"
+    #include "ssd1306.h"
 #endif
 
+#ifdef USE_I2C
+    #include <stddef.h>
+    #ifdef __AVR__
+        #include <avr/interrupt.h>
+        #include <avr/io.h>
+    #endif
+#endif
 
-/// clang-format off
+// clang-format off
 #define LAYOUT_split_3x6_4( \
   L00, L01, L02, L03, L04, L05,           R00, R01, R02, R03, R04, R05, \
   L10, L11, L12, L13, L14, L15,           R10, R11, R12, R13, R14, R15, \
@@ -67,7 +51,3 @@ extern uint8_t is_master;
     KC_##L20, KC_##L21, KC_##L22, KC_##L23, KC_##L24, KC_##L25,                     KC_##R20, KC_##R21, KC_##R22, KC_##R23, KC_##R24, KC_##R25, \
                                   KC_##L30, KC_##L31, KC_##L32, KC_##L33, KC_##R30, KC_##R31, KC_##R32, KC_##R33 \
   )
-
-// clang-format on
-
-#define LAYOUT LAYOUT_split_3x6_4

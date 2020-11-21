@@ -1,5 +1,3 @@
-SRC += 	matrix.c \
-		split_util.c \
-		split_scomm.c
+LIB_SRC += ssd1306.c
 
-LAYOUTS = split_3x6_4
+DEFAULT_FOLDER = limb44/rev1/legacy

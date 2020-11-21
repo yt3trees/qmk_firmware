@@ -15,18 +15,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include "rev1.h"
 
-#pragma once
-
-/* ws2812 RGB LED */
-#define RGB_DI_PIN D3
-
-#ifdef RGBLIGHT_ENABLE
-#    define RGBLED_NUM 12  // Number of LEDs
-#    define RGBLIGHT_SPLIT
-#endif
-
-#ifdef RGB_MATRIX_ENABLE
-#    define RGBLED_NUM 54  // Number of LEDs
-#    define DRIVER_LED_TOTAL RGBLED_NUM
+#ifdef SSD1306OLED
+bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
+  return process_record_gfx(keycode,record) && process_record_user(keycode, record);
+}
 #endif

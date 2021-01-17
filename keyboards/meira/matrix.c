@@ -33,11 +33,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "config.h"
 #include "timer.h"
 
-#ifndef DEBOUNCE
-#   define DEBOUNCE 5
+#ifndef DEBOUNCING_DELAY
+#   define DEBOUNCING_DELAY 5
 #endif
 
-#if (DEBOUNCE > 0)
+#if (DEBOUNCING_DELAY > 0)
     static uint16_t debouncing_time;
     static bool debouncing = false;
 #endif
@@ -116,6 +116,8 @@ void matrix_init(void)
     init_rows();
 //    init_lcols();
 
+//    TX_RX_LED_INIT;
+
     // initialize matrix state: all keys off
     for (uint8_t i=0; i < MATRIX_ROWS; i++) {
         matrix[i] = 0;
@@ -130,7 +132,7 @@ uint8_t _matrix_scan(void)
 {
     // Set col, read rows
     for (uint8_t current_col = 0; current_col < MATRIX_COLS; current_col++) {
-#       if (DEBOUNCE > 0)
+#       if (DEBOUNCING_DELAY > 0)
             bool matrix_changed = read_rows_on_col(matrix_debouncing, current_col);
             if (matrix_changed) {
                 debouncing = true;
@@ -142,8 +144,8 @@ uint8_t _matrix_scan(void)
 
     }
 
-#   if (DEBOUNCE > 0)
-        if (debouncing && (timer_elapsed(debouncing_time) > DEBOUNCE)) {
+#   if (DEBOUNCING_DELAY > 0)
+        if (debouncing && (timer_elapsed(debouncing_time) > DEBOUNCING_DELAY)) {
             for (uint8_t i = 0; i < MATRIX_ROWS; i++) {
                 matrix[i] = matrix_debouncing[i];
             }
@@ -274,3 +276,5 @@ static void unselect_cols(void)
         _SFR_IO8((pin >> 4) + 2) &=  ~_BV(pin & 0xF); // LOW
     }
 }
+
+

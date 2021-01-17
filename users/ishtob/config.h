@@ -15,6 +15,7 @@
 
 //#define LEADER_TIMEOUT 300
 //#define BACKLIGHT_BREATHING
+#define PREVENT_STUCK_MODIFIERS
 //#define PERMISSIVE_HOLD
 // #define QMK_KEYS_PER_SCAN 4
 
@@ -71,5 +72,5 @@
 
 // Most tactile encoders have detents every 4 stages
 #define ENCODER_RESOLUTION 4
-
+                                
 #endif

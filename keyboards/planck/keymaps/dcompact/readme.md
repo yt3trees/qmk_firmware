@@ -1,6 +1,6 @@
 # DCompact Layout
 
-**Dvorak, Layered, Mouse-Enabled, Compact -- now with Game Mode~**
+**Dvorak, Layered, Mouse-Enabled, Compact -- now with Plover~**
 
 _See [the layout source](keymap.c) for the actual layout_
 
@@ -34,10 +34,10 @@ merge with those in the keyboard folder_
 
 ## Relevant Links
 
-- [Online Dvorak Layout Trainer](https://learn.dvorak.nl/)
-- [Dvorak Wikipedia Page](https://en.wikipedia.org/wiki/Dvorak_Simplified_Keyboard)
-- [QMK Docs](https://docs.qmk.fm/#/)
-- [QMK KeyCode Reference](https://docs.qmk.fm/#/keycodes)
+- ![Online Dvorak Layout Trainer](https://learn.dvorak.nl/)
+- ![Dvorak Wikipedia Page](https://en.wikipedia.org/wiki/Dvorak_Simplified_Keyboard)
+- ![QMK Docs](https://docs.qmk.fm/#/)
+- ![QMK KeyCode Reference](https://docs.qmk.fm/#/keycodes)
 
 ## Contact
 

@@ -14,7 +14,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#ifndef CONFIG_USER_H
+#define CONFIG_USER_H
+
+#include "../../config.h"
 
 // place overrides here
 
@@ -23,6 +26,10 @@
 
 //Tap Dancing
 #define TAPPING_TERM 200
+
+// Alt gr
+#define ALGR(kc) RALT(kc)
+#define DE_ALGR KC_RALT
 
 // normal characters
 #define DE_Z KC_Y
@@ -115,3 +122,4 @@
 
 // Launchy
 #define ALT_SPC LALT(KC_SPC)
+#endif

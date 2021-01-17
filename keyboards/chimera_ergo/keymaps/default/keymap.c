@@ -17,14 +17,6 @@ enum chimera_ergo_layers
   _NAV
 };
 
-enum custom_keycodes {
-  SC_INCL = SAFE_RANGE,
-  SC_PULL,
-  SC_PUSH,
-  SC_SCAP,
-  SC_SCOF
-};
-
 #define SC_NMPD TG(_NUMPAD)
 #define SC_SYMB TG(_SYMBOLS)
 #define SC_SPFN LT(_NAV,KC_EQL)
@@ -34,10 +26,19 @@ enum custom_keycodes {
 #define SC_SPRT MT(MOD_LALT, KC_1)
 #define SC_GBRC MT(MOD_RGUI, KC_RBRC)
 #define SC_MESC LT(_MACROS, KC_ESC)
+#define SC_INCL M(0)
+#define SC_PULL M(1)
+#define SC_PUSH M(2)
+#define SC_SCAP M(3)
+#define SC_SCOF M(4)
 #define SC_CAD LALT(LCTL(KC_DEL))
 
 #define LONGPRESS_DELAY 150
 //#define LAYER_TOGGLE_DELAY 300
+
+// Fillers to make layering more clear
+#define _______ KC_TRNS
+#define XXXXXXX KC_NO
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -91,44 +92,51 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  switch(keycode) {
+
+const uint16_t PROGMEM fn_actions[] = {
+
+};
+
+const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
+{
+  switch(id) {
     /* include some kind of library or header */
-    case SC_INCL:
+    case 0:
       if (record->event.pressed) {
         SEND_STRING("#include <>");
-        tap_code(KC_LEFT);
+        return MACRO( T(LEFT), END);
       }
-      return false;
-    case SC_PULL:
+      break;
+    case 1:
       if (record->event.pressed) {
         SEND_STRING("git pull");
-        tap_code(KC_ENT);
+        return MACRO( T(ENT), END );
       }
-      return false;
-    case SC_PUSH:
-      if (record->event.pressed) {
+      break;
+    case 2:
+      if (record->event.pressed){
         SEND_STRING("git push");
-        tap_code(KC_ENT);
+        return MACRO( T(ENT), END );
       }
-      return false;
-    case SC_SCAP:
-      if (record->event.pressed) {
+      break;
+    case 3:
+      if (record->event.pressed){
         layer_on(_CAPS);
-        tap_code(KC_CAPS);
+        register_code(KC_CAPSLOCK);
+        unregister_code(KC_CAPSLOCK);
       }
-      return false;
-    case SC_SCOF:
-      if (record->event.pressed) {
+      break;
+    case 4:
+      if (record->event.pressed){
         layer_off(_CAPS);
-        tap_code(KC_CAPS);
+        register_code(KC_CAPSLOCK);
+        unregister_code(KC_CAPSLOCK);
       }
-      return false;
-    default:
-      return true;
+      break;
   }
-  return true;
+  return MACRO_NONE;
 };
+
 
 void matrix_scan_user(void) {
     uint8_t layer = biton32(layer_state);

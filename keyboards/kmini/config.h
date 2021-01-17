@@ -39,15 +39,20 @@
 #define MATRIX_COL_PINS { }
 #define UNUSED_PINS
 
-/* COL2ROW, ROW2COL*/
-//#define DIODE_DIRECTION
+/* COL2ROW, ROW2COL, or CUSTOM_MATRIX */
+#define DIODE_DIRECTION CUSTOM_MATRIX
 
 /* number of backlight levels */
-//#define BACKLIGHT_LEVELS 3
+#define BACKLIGHT_LEVELS 3
 // #define BACKLIGHT_PIN B7
 // #define BACKLIGHT_BREATHING
 
 /* Debounce reduces chatter (unintended double-presses) - set 0 if debouncing is not needed */
-#define DEBOUNCE 5
+#define DEBOUNCING_DELAY 5
+
+/* key combination for magic key command */
+#define IS_COMMAND() ( \
+    keyboard_report->mods == (MOD_BIT(KC_LSHIFT) | MOD_BIT(KC_RSHIFT)) \
+)
 
 #endif

@@ -1,27 +1,37 @@
+
+## Project specific files
+SRC=  babblePaste.c
+
+
 ifdef ASTAR
-    MCU = atmega32u4
-    CFLAGS = -D ASTAR
-    USB = /dev/cu.usbmodem14141
-    SCULPT_UPLOAD_COMMAND = while [ ! -r $(USB) ]; do sleep 1; done ; avrdude -p $(MCU) -c avr109 -U flash:w:$(TARGET).hex -P $(USB)
+  CFLAGS=-D ASTAR
+ MCU = atmega32u4
+ SCULPT_UPLOAD_COMMAND = while [ ! -r $(USB) ]; do sleep 1; done ; \
+		 avrdude -p $(MCU) -c avr109 -U flash:w:$(TARGET).hex -P $(USB)
+
 else
-    MCU = at90usb1286
-    SCULPT_UPLOAD_COMMAND = teensy_loader_cli -w -mmcu=$(MCU) $(TARGET).hex
+ MCU = at90usb1286
+ SCULPT_UPLOAD_COMMAND = teensy_loader_cli -w -mmcu=$(MCU) $(TARGET).hex
 endif
 
-# Bootloader selection
-#   Teensy       halfkay
-#   Pro Micro    caterina
-#   Atmel DFU    atmel-dfu
-#   LUFA DFU     lufa-dfu
-#   QMK DFU      qmk-dfu
-#   ATmega32A    bootloadHID
-#   ATmega328P   USBasp
+F_CPU = 16000000
+ARCH = AVR8
+F_USB = $(F_CPU)
+
+# Bootloader
+#     This definition is optional, and if your keyboard supports multiple bootloaders of
+#     different sizes, comment this out, and the correct address will be loaded 
+#     automatically (+60). See bootloader.mk for all options.
 ifdef ASTAR
-    BOOTLOADER = caterina
+  BOOTLOADER = caterina
 else
-    BOOTLOADER = atmel-dfu
+  BOOTLOADER = atmel-dfu
 endif
 
+# Interrupt driven control endpoint task(+60)
+OPT_DEFS += -DINTERRUPT_CONTROL_ENDPOINT
+
+#
 BOOTMAGIC_ENABLE = no      # Virtual DIP switch configuration(+1000)
 MOUSEKEY_ENABLE = no       # Mouse keys(+4700)
 EXTRAKEY_ENABLE = yes       # Audio control and System control(+450)
@@ -37,5 +47,10 @@ UNICODE_ENABLE = no         # Unicode
 BLUETOOTH_ENABLE = no       # Enable Bluetooth with the Adafruit EZ-Key HID
 AUDIO_ENABLE = no           # Audio output on port C6
 
-# Project specific files
-SRC = babblePaste.c
+
+USB = /dev/cu.usbmodem14141
+
+ 
+
+# upload: build
+# 	$(SCULPT_UPLOAD_COMMAND)

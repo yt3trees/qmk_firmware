@@ -22,14 +22,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // convert to L string
 #define LSTR(s) XLSTR(s)
-#define XLSTR(s) L## #s
+#define XLSTR(s) L ## #s
 // convert to string
-#define STR(s) XSTR(s)
-#define XSTR(s) #s
+#define STR(...) XSTR(__VA_ARGS__)
+#define XSTR(...) #__VA_ARGS__
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 uint8_t bitpop(uint8_t bits);
 uint8_t bitpop16(uint16_t bits);
@@ -42,9 +39,5 @@ uint8_t biton32(uint32_t bits);
 uint8_t  bitrev(uint8_t bits);
 uint16_t bitrev16(uint16_t bits);
 uint32_t bitrev32(uint32_t bits);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

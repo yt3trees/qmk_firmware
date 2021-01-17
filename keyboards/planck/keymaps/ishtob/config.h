@@ -2,6 +2,7 @@
 #ifndef USERSPACE_CONFIG_H
 #define USERSPACE_CONFIG_H
 
+
 #ifdef AUDIO_ENABLE
 
 // #define STARTUP_SONG SONG(E1M1_DOOM)
@@ -23,6 +24,7 @@
 #define FORCE_NKRO
 
 #define LEADER_TIMEOUT 300
+#define PREVENT_STUCK_MODIFIERS
 
 #undef DEBOUNCE
 #define DEBOUNCE 0

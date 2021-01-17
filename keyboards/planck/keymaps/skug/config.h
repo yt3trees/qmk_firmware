@@ -1,20 +1,13 @@
 #pragma once
 
-// Override SpaceCadet Settings
-#undef LSPO_KEY
-#undef RSPC_KEY
-#define LSPO_KEY KC_8 // Nordic Left SpaceCadet
-#define RSPC_KEY KC_9 // Nordic Right SpaceCadet
-
-// Audio
 #ifdef AUDIO_ENABLE
-    #define STARTUP_SONG SONG(COIN_SOUND)
+    #define STARTUP_SONG SONG(PLANCK_SOUND)
+    // #define STARTUP_SONG SONG(NO_SOUND)
 
     #define DEFAULT_LAYER_SONGS { SONG(QWERTY_SOUND), \
                                   SONG(COLEMAK_SOUND), \
                                   SONG(DVORAK_SOUND) \
                                 }
-#endif
 
 /*
  * MIDI options
@@ -42,3 +35,5 @@
 
 // Most tactile encoders have detents every 4 stages
 #define ENCODER_RESOLUTION 4
+
+#endif

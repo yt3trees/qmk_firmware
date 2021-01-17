@@ -25,22 +25,21 @@ Press `S+D` simultaneously and hold, then...
 - It can be activated by holding `/` as well, but it's slower since `LT()` uses `TAPPING_TERM` of 200ms but `S+D` uses `COMBO_TERM` of only 20ms (Can be changed within config.h)
 
 ## Build instructions
-If your environment is ready to build with `make`, don't use docker since it takes 5m+ to compile.
-Use the instructions in Ergodox Infinity's readme.
+- `cd /path/to/qmk_firmware`
 
-#### Left side (Docker)
-```
-cd /path/to/qmk_firmware
-util/docker_build.sh ergodox_infinity:narze
+#### Left side
+ ```
+docker run -e keymap=narze -e subproject=infinity -e keyboard=ergodox --rm -v $('pwd'):/qmk:rw edasque/qmk_firmware
 avr-objcopy -Iihex -Obinary .build/ergodox_infinity_narze.hex .build/ergodox_infinity_narze_left.bin
 dfu-util --device 1c11:b007 -D .build/ergodox_infinity_narze_left.bin
 ```
 
-#### Right side (Docker)
-You have to override `usb_args` in order to pass `MASTER=right` to docker using provided build script.
+#### Right side
 ```
-cd /path/to/qmk_firmware
-usb_args="-e MASTER=right" util/docker_build.sh ergodox_infinity:narze
+docker run -e keymap=narze -e subproject=infinity -e keyboard=ergodox -e MASTER=right --rm -v $('pwd'):/qmk:rw edasque/qmk_firmware
 avr-objcopy -Iihex -Obinary .build/ergodox_infinity_narze.hex .build/ergodox_infinity_narze_right.bin
 dfu-util --device 1c11:b007 -D .build/ergodox_infinity_narze_right.bin
 ```
+
+## TODO
+- [ ] Make SuperDuper mode fully-compatible in Windows by swapping GUI with Ctrl

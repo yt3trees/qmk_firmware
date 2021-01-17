@@ -15,15 +15,15 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#pragma once
+#ifndef FACEW_CONFIG_H
+#define FACEW_CONFIG_H
 
 #include "config_common.h"
 
 #define VENDOR_ID       0x20A0
 #define PRODUCT_ID      0x422D
-#define DEVICE_VER      0x0200
-#define MANUFACTURER    SPRiT
-#define PRODUCT         FaceW
+#define MANUFACTURER    NotActuallyWinkeyless
+#define PRODUCT         facew
 
 #define RGBLED_NUM 16
 
@@ -35,9 +35,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define UNUSED_PINS
 
 #define DIODE_DIRECTION COL2ROW
-#define DEBOUNCE 5
+#define DEBOUNCING_DELAY 5
 
-#define BACKLIGHT_PIN D4
-#define BACKLIGHT_LEVELS 3
-
+#define NO_BACKLIGHT_CLOCK
+#define BACKLIGHT_LEVELS 1
 #define RGBLIGHT_ANIMATIONS
+
+#define NO_UART 1
+
+/* key combination for command */
+#define IS_COMMAND() (keyboard_report->mods == (MOD_BIT(KC_LSHIFT) | MOD_BIT(KC_RSHIFT)))
+
+#endif

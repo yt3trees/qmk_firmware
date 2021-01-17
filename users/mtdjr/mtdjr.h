@@ -55,6 +55,8 @@ enum user_tapdance {
 
 // Custom Keycodes
 #define KC_     KC_TRNS
+#define _______ KC_TRNS
+#define XXXXXXX KC_NO
 #define KC_xxxx KC_NO
 #define KC_LOWR LOWER
 #define KC_RASE RAISE
@@ -93,7 +95,7 @@ enum user_tapdance {
 #define KC_BLD  BL_DEC
 #define KC_BLB  BL_BRTG
 #define KC_BLON BL_ON
-#define KC_BLOF BL_OFF
+#define KB_BLOF BL_OFF
 
 
 #endif

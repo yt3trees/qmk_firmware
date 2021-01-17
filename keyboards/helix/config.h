@@ -16,7 +16,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#pragma once
+#ifndef CONFIG_H
+#define CONFIG_H
 
 #include "config_common.h"
 
@@ -25,6 +26,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //   -include keyboards/helix/rev?/config.h
 //   -include keyboards/helix/rev?/keymaps/MAPNAME/config.h
 //   XXXX.c
+
+#include <serial_config.h>
 
 // GCC include search path in qmk_firmare/keyboards/helix/
 //    #include "..." search starts here:
@@ -35,3 +38,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //     .
 //     ./tmk_core
 //     ......
+
+#ifdef USE_Link_Time_Optimization
+  // LTO has issues with macros (action_get_macro) and "functions" (fn_actions),
+  //  so just disable them
+  #define NO_ACTION_MACRO
+  #define NO_ACTION_FUNCTION
+
+  #define DISABLE_LEADER
+#endif // USE_Link_Time_Optimization
+
+#endif /* CONFIG_H */

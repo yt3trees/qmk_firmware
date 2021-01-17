@@ -14,7 +14,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#pragma once
+#ifndef VER2_CONFIG_H
+#define VER2_CONFIG_H
+
+#include "../config.h"
 
 /* USB Device descriptor parameter */
 #define DEVICE_VER      0x0002
@@ -29,15 +32,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define UNUSED_PINS
 
 
-#define USE_I2C
-#define SSD1306OLED
-#define OLED_ROTATE180
-
-/* ws2812 RGB LED*/
-#define RGB_DI_PIN D4
-#define RGBLIGHT_ANIMATIONS
-#define RGBLED_NUM 14     // Number of LEDs
-#define RGBLIGHT_HUE_STEP 10
-#define RGBLIGHT_SAT_STEP 17
-
-
+#endif

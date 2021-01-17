@@ -1,5 +1,8 @@
-#include QMK_KEYBOARD_H
+#include "dactyl_manuform.h"
+#include "action_layer.h"
+#include "eeconfig.h"
 
+extern keymap_config_t keymap_config;
 
 #define _BASE 0
 #define _RAISE 1
@@ -19,7 +22,7 @@
 #define KC_MU KC_MS_UP
 #define KC_MD KC_MS_DOWN
 #define KC_MB1 KC_MS_BTN1
-#define KC_MB2 KC_MS_BTN2
+#define KC_MB2 KC_MS_BTN1
 
 #define RAISE MO(_RAISE)
 #define LOWER MO(_LOWER)
@@ -43,7 +46,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                    '------+------' '------+------'
  *                                    | TAB  | HOME | | END  | DEL  |
  *                                    '------+------' '------+------'
- *                                    | Raise|  ~   | | GUI  | Lower|
+ *                                    | Lower|  ~   | | GUI  | Raise|
  *                                    '------+------' '------+------'
  */
 
@@ -91,7 +94,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,----------------------------------,                             ,----------------------------------,
  * | F1   | F2   | F3   | F4   | F5   |                             |  F6  | F7   |  F8  |  F9  |  F10 |
  * |------+------+------+------+------|                             |-------------+------+------+------|
- * |  1   |  2   |  3   |  4   |  5   |                             |  6   |  7   |  8   |  9   |  0   |
+ * |  1   |  2   |  3   |  4   |  5   |                             |  6   |  7   |  8   |  9   |  10  |
  * |------+------+------+------+------|                             |------|------+------+------+------|
  * |  !   |  @   |  #   |  $   |  %   |                             |  ^   |  &   |  *   |  (   |  )   |
  * |------+------+------+-------------,                             ,-------------+------+------+------,
@@ -123,3 +126,4 @@ void persistent_default_layer_set(uint16_t default_layer) {
   eeconfig_update_default_layer(default_layer);
   default_layer_set(default_layer);
 }
+

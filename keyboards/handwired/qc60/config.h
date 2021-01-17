@@ -16,7 +16,9 @@
 #define MATRIX_COLS 8
 
 /* Set 0 if debouncing isn't needed */
-#define DEBOUNCE 5
+#define DEBOUNCING_DELAY 5
 
-/* serial.c configuration for split keyboard */
-#define SOFT_SERIAL_PIN D0
+/* key combination for command */
+#define IS_COMMAND() ( \
+    keyboard_report->mods == (MOD_BIT(KC_LSHIFT) | MOD_BIT(KC_RSHIFT)) \
+)

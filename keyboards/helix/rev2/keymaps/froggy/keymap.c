@@ -61,10 +61,14 @@ enum macro_keycodes {
   KC_SAMPLEMACRO,
 };
 
+
+// Fillers to make layering more clear
+#define _______ KC_TRNS
+#define XXXXXXX KC_NO
 //Macros
 #define M_SAMPLE M(KC_SAMPLEMACRO)
 
-#if MATRIX_ROWS == 10 // HELIX_ROWS == 5
+#if HELIX_ROWS == 5
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   /* Base
@@ -395,7 +399,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       #ifdef RGBLIGHT_ENABLE
         if (record->event.pressed) {
           RGBAnimation = true;
-          rgblight_mode(RGBLIGHT_MODE_RAINBOW_MOOD);
+          rgblight_mode(6);
           RGB_current_mode = rgblight_config.mode;
         }
       #endif
@@ -404,7 +408,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       #ifdef RGBLIGHT_ENABLE
         if (record->event.pressed) {
           RGBAnimation = true;
-          rgblight_mode(RGBLIGHT_MODE_RAINBOW_SWIRL + 1);
+          rgblight_mode(10);
           RGB_current_mode = rgblight_config.mode;
         }
       #endif
@@ -413,7 +417,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       #ifdef RGBLIGHT_ENABLE
         if (record->event.pressed) {
           RGBAnimation = true;
-          rgblight_mode(RGBLIGHT_MODE_KNIGHT);
+          rgblight_mode(21);
           RGB_current_mode = rgblight_config.mode;
         }
       #endif
@@ -504,7 +508,7 @@ void led_ripple_effect(char r, char g, char b) {
 
     if (scan_count == -1) {
       rgblight_enable_noeeprom();
-      rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
+      rgblight_mode(0);
     } else if (scan_count >= 0 && scan_count < 5) {
       for (unsigned char c=keybuf_begin; c!=keybuf_end; c++) {
         int i = c;
@@ -589,39 +593,19 @@ void matrix_scan_user(void) {
     if(!RGBAnimation){
       switch (layer_state) {
         case L_BASE:
-          #ifdef RGBLED_BACK
-            led_ripple_effect(0,112,127);
-          #else
-            rgblight_setrgb(0,112,127);
-          #endif
+          led_ripple_effect(0,112,127);
           break;
         case L_OPT:
-          #ifdef RGBLED_BACK
-            led_ripple_effect(127,0,100);
-          #else
-            rgblight_setrgb(127,0,100);
-          #endif
+          led_ripple_effect(127,0,100);
           break;
         case L_NUM:
-          #ifdef RGBLED_BACK
-            led_ripple_effect(127,23,0);
-          #else
-            rgblight_setrgb(127,23,0);
-          #endif
+          led_ripple_effect(127,23,0);
           break;
         case L_SYM:
-          #ifdef RGBLED_BACK
-            led_ripple_effect(0,127,0);
-          #else
-            rgblight_setrgb(0,127,0);
-          #endif
+          led_ripple_effect(0,127,0);
           break;
         case L_FUNC:
-          #ifdef RGBLED_BACK
-            led_ripple_effect(127,0,61);
-          #else
-            rgblight_setrgb(127,0,61);
-          #endif
+          led_ripple_effect(127,0,61);
           break;
         }
     }

@@ -46,6 +46,10 @@ enum custom_keycodes {
   #endif
 };
 
+// Fillers to make layering more clear
+#define _______ KC_TRNS
+#define XXXXXXX KC_NO
+
 // Layer Mode aliases
 #define DL_BAS  DF(_BASE)
 #define DL_BASE DF(_BAS_E)
@@ -55,7 +59,7 @@ enum custom_keycodes {
 #define ML_RAIE MO(_RAI_E)
 #define ML_ADJ  MO(_ADJUST)
 
-#if MATRIX_ROWS == 10 // HELIX_ROWS == 5
+#if HELIX_ROWS == 5
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   /* Qwerty JIS Normal
    * ,-----------------------------------------.             ,-----------------------------------------.
@@ -200,7 +204,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     XXXXXXX, RESET,   RGBRST,  XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, RESET,   RGBRST,  XXXXXXX, XXXXXXX, XXXXXXX, \
     XXXXXXX, DL_BAS,  DL_BASE, AG_NORM, AG_SWAP, XXXXXXX,                   XXXXXXX, DL_BAS,  DL_BASE, AG_NORM, AG_SWAP, XXXXXXX, \
     XXXXXXX, RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI, XXXXXXX,                   XXXXXXX, RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI, XXXXXXX, \
-    XXXXXXX, RGB_MOD, RGB_HUD, RGB_SAD, RGB_VAD, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, RGB_MOD, RGB_HUD, RGB_SAD, RGB_VAD, XXXXXXX, \
+    XXXXXXX, RGB_SMOD,RGB_HUD, RGB_SAD, RGB_VAD, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, RGB_SMOD,RGB_HUD, RGB_SAD, RGB_VAD, XXXXXXX, \
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______  \
     ),
 };
@@ -210,7 +214,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 #endif
 
 #ifdef SSD1306OLED
-char keylog[24] = {};
+char keylog[20] = {};
 const char code_to_name[60] = {
     ' ', ' ', ' ', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
     'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
@@ -219,7 +223,7 @@ const char code_to_name[60] = {
     'R', 'E', 'B', 'T', ' ', '-', ' ', '@', ' ', ' ',
     ' ', ';', ':', ' ', ',', '.', '/', ' ', ' ', ' '};
 
-static inline void set_keylog(uint16_t keycode, keyrecord_t *record)
+inline void set_keylog(uint16_t keycode, keyrecord_t *record)
 {
   char name = ' ';
   uint8_t leds = host_keyboard_leds();
@@ -242,12 +246,6 @@ static inline void set_keylog(uint16_t keycode, keyrecord_t *record)
 }
 #endif
 
-#ifdef RGBLIGHT_ENABLE
-#define RGBLIGHT(mode) rgblight_mode(mode)
-#else
-#define RGBLIGHT(mode)
-#endif
-
 // define variables for reactive RGB
 int RGB_current_mode;
 #ifdef ADJUST_MACRO_ENABLE
@@ -263,6 +261,12 @@ void update_tri_layer_RGB(uint8_t layer1, uint8_t layer2, uint8_t layer3) {
 #define ADJUST_MACRO(layer1, layer2, layer3) update_tri_layer_RGB(layer1, layer2, layer3)
 #else
 #define ADJUST_MACRO(layer1, layer2, layer3)
+#endif
+
+#ifdef RGBLIGHT_ENABLE
+#define RGBLIGHT(mode) rgblight_mode(mode)
+#else
+#define RGBLIGHT(mode)
 #endif
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -340,7 +344,7 @@ void matrix_scan_user(void) {
   iota_gfx_task();  // this is what updates the display continuously
 }
 
-static inline void matrix_update(struct CharacterMatrix *dest,
+inline void matrix_update(struct CharacterMatrix *dest,
                           const struct CharacterMatrix *source) {
   if (memcmp(dest->display, source->display, sizeof(dest->display))) {
     memcpy(dest->display, source->display, sizeof(dest->display));
@@ -363,15 +367,13 @@ const char helix_logo[]={
   0xa0,0xa1,0xa2,0xa3,0xa4,0xa5,0xa6,0xa7,0xa8,0xa9,0xaa,0xab,0xac,0xad,0xae,0xaf,0xb0,0xb1,0xb2,0xb3,0xb4,
   0xc0,0xc1,0xc2,0xc3,0xc4,0xc5,0xc6,0xc7,0xc8,0xc9,0xca,0xcb,0xcc,0xcd,0xce,0xcf,0xd0,0xd1,0xd2,0xd3,0xd4,
   0};
-
-static inline void render_logo(struct CharacterMatrix *matrix) {
+inline void render_logo(struct CharacterMatrix *matrix) {
 
   matrix_write(matrix, helix_logo);
 }
 
 const char mac_win_logo[][2][3]={{{0x95,0x96,0},{0xb5,0xb6,0}},{{0x97,0x98,0},{0xb7,0xb8,0}}};
-
-static inline void render_status(struct CharacterMatrix *matrix) {
+inline void render_status(struct CharacterMatrix *matrix) {
 
   char buf[20];
   // Render to mode icon

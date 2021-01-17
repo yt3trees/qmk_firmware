@@ -13,3 +13,6 @@ else
 BLUETOOTH_ENABLE = yes
 endif
 
+ifndef QUANTUM_DIR
+	include ../../../../Makefile
+endif

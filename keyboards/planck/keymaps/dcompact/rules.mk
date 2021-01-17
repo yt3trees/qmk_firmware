@@ -1,3 +1,7 @@
+ifndef QUANTUM_DIR
+	include ../../../../Makefile
+endif
+
 # https://beta.docs.qmk.fm/reference/config-options#feature-options
 # Features Specifically Wanted
 EXTRAKEY_ENABLE = yes
@@ -9,4 +13,3 @@ AUDIO_ENABLE = yes
 MOUSEKEY_ENABLE = no
 MIDI_ENABLE = no
 CONSOLE_ENABLE = no
-

@@ -16,7 +16,9 @@
 #include QMK_KEYBOARD_H
 
 // Fillers to make layering more clear
+#define _______ KC_TRNS
 #define ___T___ KC_TRNS
+#define XXXXXXX KC_NO
 
 // Layer shorthand
 #define _QW 0
@@ -113,6 +115,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   { _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______ },
   { _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______ },
  }
+
+};
+
+const uint16_t PROGMEM fn_actions[] = {
 
 };
 

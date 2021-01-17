@@ -1,4 +1,11 @@
+ifndef QUANTUM_DIR
+	include ../../../../Makefile
+endif
+
+
+
 # MCU name
+#MCU = at90usb1287
 MCU = atmega32u4
 
 # Processor frequency.
@@ -65,4 +72,3 @@ API_SYSEX_ENABLE = no
 
 # Do not enable SLEEP_LED_ENABLE. it uses the same timer as BACKLIGHT_ENABLE
 SLEEP_LED_ENABLE = no    # Breathing sleep LED during USB suspend
-

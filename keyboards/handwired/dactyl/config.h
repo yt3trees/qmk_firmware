@@ -36,8 +36,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define COL_EXPANDED { true, true, true, true, true, true, false, false, false, false, false, false}
 #define MATRIX_ONBOARD_ROW_PINS { F0, F1, F4, F5, F6, F7 }
 #define MATRIX_ONBOARD_COL_PINS { 0, 0, 0, 0, 0, 0, B1, B2, B3, D2, D3, C6 }
-#define EXPANDER_COL_REGISTER GPIOA
-#define EXPANDER_ROW_REGISTER GPIOB
+#define EXPANDER_COL_REGISTER 0
 #define MATRIX_EXPANDER_COL_PINS {0, 1, 2, 3, 4, 5}
 #define MATRIX_EXPANDER_ROW_PINS {0, 1, 2, 3, 4, 5}
 
@@ -54,8 +53,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* key combination for command */
 #define IS_COMMAND() ( \
-    get_mods() == (MOD_BIT(KC_LCTL) | MOD_BIT(KC_RCTL)) || \
-    get_mods() == (MOD_BIT(KC_LSFT) | MOD_BIT(KC_RSFT)) \
+    keyboard_report->mods == (MOD_BIT(KC_LCTL) | MOD_BIT(KC_RCTL)) || \
+    keyboard_report->mods == (MOD_BIT(KC_LSFT) | MOD_BIT(KC_RSFT)) \
 )
 
 /* fix space cadet rollover issue */
@@ -63,6 +62,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* Set 0 if debouncing isn't needed */
 #define DEBOUNCE    15
+
+#define PREVENT_STUCK_MODIFIERS
 
 #define USB_MAX_POWER_CONSUMPTION 500
 

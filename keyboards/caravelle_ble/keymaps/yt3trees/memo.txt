@@ -1,0 +1,8 @@
+export NRFSDK12_ROOT=/C/work/Self-MadeKeyboard/fork/dev/nRF5SDK1230/nRF5_SDK_12.3.0_d7731ad
+
+$ make caravelle_ble/master:yt3trees:dfu_ble
+
+$ cd /c/work/Self-MadeKeyboard/fork/qmk_firmware
+
+
+

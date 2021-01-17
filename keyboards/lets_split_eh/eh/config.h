@@ -16,7 +16,13 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#pragma once
+#ifndef EH_CONFIG_H
+#define EH_CONFIG_H
+
+// To let configuration know this is of type EH, which will force I2C irregardless of user config
+#define EH
+// The 'EH' only uses I2C
+#define USE_I2C
 
 #include "config_common.h"
 
@@ -34,14 +40,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* ws2812 RGB LED */
 #define RGB_DI_PIN B2
-#define RGBLED_NUM 12    // Number of LEDs (each hand)
-#define RGBLED_SPLIT { 6, 6 }
-#define RGBLIGHT_ANIMATIONS 
+#define RGBLED_NUM 6    // Number of LEDs (each hand)
 
 /* Split Defines */
 #define SPLIT_HAND_PIN D3
-#define SOFT_SERIAL_PIN D0
 
-// The 'EH' has previously forced use of I2C so this default has been kept
-// however users can undef to use serial
-#define USE_I2C
+#endif
+

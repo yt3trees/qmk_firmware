@@ -16,6 +16,7 @@
 
 #include QMK_KEYBOARD_H
 
+extern keymap_config_t keymap_config;
 
 enum layers {
   _BASE,
@@ -26,6 +27,8 @@ enum custom_keycodes {
   FUNC = SAFE_RANGE,
   BACKLIT
 };
+
+#define _______ KC_TRNS
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef LETS_SPLIT_H
+#define LETS_SPLIT_H
 
 #include "quantum.h"
 
@@ -26,3 +27,5 @@
     )
 
 #define LAYOUT_kc_ortho_4x12 LAYOUT_kc
+
+#endif

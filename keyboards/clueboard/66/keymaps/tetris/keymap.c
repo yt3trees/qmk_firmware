@@ -1,4 +1,4 @@
-#include QMK_KEYBOARD_H
+#include "66.h"
 #include "tetris_text.h"
 
 // Helpful defines

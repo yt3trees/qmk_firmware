@@ -31,11 +31,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* Set 0 if debouncing isn't needed */
 
-#ifndef DEBOUNCE
-#   define DEBOUNCE 5
+#ifndef DEBOUNCING_DELAY
+#   define DEBOUNCING_DELAY 5
 #endif
 
-#if (DEBOUNCE > 0)
+#if (DEBOUNCING_DELAY > 0)
     static uint16_t debouncing_time;
     static bool debouncing = false;
 #endif
@@ -104,6 +104,13 @@ uint8_t matrix_cols(void) {
 }
 
 void matrix_init(void) {
+
+    // To use PORTF disable JTAG with writing JTD bit twice within four cycles.
+    #if  (defined(__AVR_AT90USB1286__) || defined(__AVR_AT90USB1287__) || defined(__AVR_ATmega32U4__))
+        MCUCR |= _BV(JTD);
+        MCUCR |= _BV(JTD);
+    #endif
+
     // initialize row and col
     unselect_rows();
     init_cols();
@@ -121,7 +128,7 @@ uint8_t matrix_scan(void)
 {
     // Set row, read cols
     for (uint8_t current_row = 0; current_row < MATRIX_ROWS; current_row++) {
-#       if (DEBOUNCE > 0)
+#       if (DEBOUNCING_DELAY > 0)
             bool matrix_changed = read_cols_on_row(matrix_debouncing, current_row);
 
             if (matrix_changed) {
@@ -135,8 +142,8 @@ uint8_t matrix_scan(void)
 
     }
 
-#   if (DEBOUNCE > 0)
-        if (debouncing && (timer_elapsed(debouncing_time) > DEBOUNCE)) {
+#   if (DEBOUNCING_DELAY > 0)
+        if (debouncing && (timer_elapsed(debouncing_time) > DEBOUNCING_DELAY)) {
             for (uint8_t i = 0; i < MATRIX_ROWS; i++) {
                 matrix[i] = matrix_debouncing[i];
             }
@@ -150,7 +157,7 @@ uint8_t matrix_scan(void)
 
 bool matrix_is_modified(void)
 {
-#if (DEBOUNCE > 0)
+#if (DEBOUNCING_DELAY > 0)
     if (debouncing) return false;
 #endif
     return true;
@@ -160,7 +167,7 @@ inline
 bool matrix_is_on(uint8_t row, uint8_t col)
 
 {
-    return (matrix[row] & ((matrix_row_t)1<<col));
+    return (matrix[row] & ((matrix_row_t)1<col));
 }
 
 inline
@@ -287,3 +294,4 @@ static void unselect_row(uint8_t row)
 static void unselect_rows(void)
 {
 }
+

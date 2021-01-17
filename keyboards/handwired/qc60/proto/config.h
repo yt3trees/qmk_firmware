@@ -10,3 +10,5 @@
 /* ws2812 RGB LED */
 #define RGB_DI_PIN D3
 #define RGBLED_NUM 1    // Number of LEDs
+// #define ws2812_PORTREG  PORTD
+// #define ws2812_DDRREG   DDRD

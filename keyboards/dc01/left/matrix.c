@@ -42,11 +42,11 @@ static uint8_t error_count_arrow = 0;
 
 /* Set 0 if debouncing isn't needed */
 
-#ifndef DEBOUNCE
-#    define DEBOUNCE 5
+#ifndef DEBOUNCING_DELAY
+#   define DEBOUNCING_DELAY 5
 #endif
 
-#if (DEBOUNCE > 0)
+#if (DEBOUNCING_DELAY > 0)
     static uint16_t debouncing_time;
     static bool debouncing = false;
 #endif
@@ -135,7 +135,10 @@ uint8_t matrix_cols(void) {
     return MATRIX_COLS;
 }
 
+
 i2c_status_t i2c_transaction(uint8_t address, uint32_t mask, uint8_t col_offset);
+//uint8_t i2c_transaction_numpad(void);
+//uint8_t i2c_transaction_arrow(void);
 
 //this replases tmk code
 void matrix_setup(void){
@@ -158,7 +161,7 @@ void matrix_init(void) {
         matrix[i] = 0;
         matrix_debouncing[i] = 0;
     }
-
+    
     matrix_init_quantum();
 }
 
@@ -169,7 +172,7 @@ uint8_t matrix_scan(void)
 
     // Set row, read cols
     for (uint8_t current_row = 0; current_row < MATRIX_ROWS; current_row++) {
-#       if (DEBOUNCE > 0)
+#       if (DEBOUNCING_DELAY > 0)
             bool matrix_changed = read_cols_on_row(matrix_debouncing, current_row);
 
             if (matrix_changed) {
@@ -187,7 +190,7 @@ uint8_t matrix_scan(void)
 
     // Set col, read rows
     for (uint8_t current_col = 0; current_col < MATRIX_COLS; current_col++) {
-#       if (DEBOUNCE > 0)
+#       if (DEBOUNCING_DELAY > 0)
             bool matrix_changed = read_rows_on_col(matrix_debouncing, current_col);
             if (matrix_changed) {
                 debouncing = true;
@@ -201,15 +204,15 @@ uint8_t matrix_scan(void)
 
 #endif
 
-#   if (DEBOUNCE > 0)
-        if (debouncing && (timer_elapsed(debouncing_time) > DEBOUNCE)) {
+#   if (DEBOUNCING_DELAY > 0)
+        if (debouncing && (timer_elapsed(debouncing_time) > DEBOUNCING_DELAY)) {
             for (uint8_t i = 0; i < MATRIX_ROWS; i++) {
                 matrix[i] = matrix_debouncing[i];
             }
             debouncing = false;
         }
 #   endif
-
+        
     if (i2c_transaction(SLAVE_I2C_ADDRESS_RIGHT, 0x3F, 0)){ //error has occured for main right half
         error_count_right++;
         if (error_count_right > ERROR_DISCONNECT_COUNT){ //disconnect half
@@ -217,10 +220,10 @@ uint8_t matrix_scan(void)
                 matrix[i] &= 0x3F; //mask bits to keep
             }
         }
-   }else{ //no error
+    }else{ //no error
         error_count_right = 0;
     }
-
+    
     if (i2c_transaction(SLAVE_I2C_ADDRESS_ARROW, 0X3FFF, 8)){ //error has occured for arrow cluster
         error_count_arrow++;
         if (error_count_arrow > ERROR_DISCONNECT_COUNT){ //disconnect arrow cluster
@@ -249,7 +252,7 @@ uint8_t matrix_scan(void)
 
 bool matrix_is_modified(void)
 {
-#if (DEBOUNCE > 0)
+#if (DEBOUNCING_DELAY > 0)
     if (debouncing) return false;
 #endif
     return true;
@@ -258,7 +261,7 @@ bool matrix_is_modified(void)
 inline
 bool matrix_is_on(uint8_t row, uint8_t col)
 {
-    return (matrix[row] & ((matrix_row_t)1<<col));
+    return (matrix[row] & ((matrix_row_t)1<col));
 }
 
 inline
@@ -437,28 +440,40 @@ static void unselect_cols(void)
 // Complete rows from other modules over i2c
 i2c_status_t i2c_transaction(uint8_t address, uint32_t mask, uint8_t col_offset) {
     i2c_status_t err = i2c_start((address << 1) | I2C_WRITE, 10);
-    i2c_write(0x01, 10); //request data in address 1
+    if (err) return err;
+    i2c_write(0x01, 10);
+    if (err) return err;
 
-    i2c_start((address << 1) | I2C_READ, 5);
+    i2c_start((address << 1) | I2C_READ, 10);
+    if (err) return err;
 
     err = i2c_read_ack(10);
     if (err == 0x55) { //synchronization byte
 
-        for (uint8_t i = 0; i < MATRIX_ROWS-1 ; i++) { //assemble slave matrix in main matrix
-            matrix[i] &= mask; //mask bits to keep
-            err = i2c_read_ack(10);
-                matrix[i] |= ((uint32_t)err << (MATRIX_COLS_SCANNED + col_offset)); //add new bits at the end
-            }
-        //last read request must be followed by a NACK
-        matrix[MATRIX_ROWS - 1] &= mask; //mask bits to keep
-        err = i2c_read_nack(10);
+    for (uint8_t i = 0; i < MATRIX_ROWS-1 ; i++) { //assemble slave matrix in main matrix
+        matrix[i] &= mask; //mask bits to keep
+        err = i2c_read_ack(10);
+        if (err >= 0) {
+            matrix[i] |= ((uint32_t)err << (MATRIX_COLS_SCANNED + col_offset)); //add new bits at the end
+        } else {
+             return err;
+        }
+      }
+    //last read request must be followed by a NACK
+    matrix[MATRIX_ROWS - 1] &= mask; //mask bits to keep
+    err = i2c_read_nack(10);
+    if (err >= 0) {
         matrix[MATRIX_ROWS - 1] |= ((uint32_t)err << (MATRIX_COLS_SCANNED + col_offset)); //add new bits at the end
-
+        } else {
+            return err;
+        }
     } else {
-        i2c_stop();
+        i2c_stop(10);
         return 1;
     }
 
-    i2c_stop();
+    i2c_stop(10);
+    if (err) return err;
+
     return 0;
 }

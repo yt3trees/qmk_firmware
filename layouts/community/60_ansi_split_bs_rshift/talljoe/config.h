@@ -1,21 +1,9 @@
-/* Copyright 2020 Joseph Wasson
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+#ifndef CONFIG_USER_H
+#define CONFIG_USER_H
 
-#pragma once
+#include QMK_KEYBOARD_CONFIG_H
 
+#define PREVENT_STUCK_MODIFIERS
 #define ENABLE_GAME_LAYER
 
 #define TEMPLATE(                                                                   \
@@ -29,7 +17,7 @@
     K10, K11, K12, K13, K14, K15, K16, K17, K18, K19, K1A, K1B, K1C, K1D,           \
     K20, K21, K22, K23, K24, K25, K26, K27, K28, K29, K2A, K2B, K2C,                \
     K30,      K32, K33, K34, K35, K36, K37, K38, K39, K3A, K3B, K3C, K3D,           \
-    K40, K41, K42,           K46,           K48, K49,      K4B, K4C                 \
+    K40, K41, K42,           K45,           K48, K49,      K4B, K4C                 \
 )
 
 /* Color Map */
@@ -47,7 +35,7 @@
    { K40, K41, K42, {}, {}, {}, {}, K47, {}, {}, K4A, K4B, K4C, K4D } \
   }
 
-#if defined (RGB_BACKLIGHT_ZEAL60) || defined (RGB_BACKLIGHT_M60_A)
+#ifdef KEYBOARD_zeal60
 
   #define ZEAL_RGB
 
@@ -81,3 +69,5 @@
   #define BACKLIGHT_ALPHAS_MODS_ROW_2 0b0011000000000001
 
 #endif //KEYBOARD_zeal60
+
+#endif //CONFIG_USER_H

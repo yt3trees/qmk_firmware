@@ -19,11 +19,15 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#pragma once
+#ifndef REV3_H
+#define REV3_H
 
 #include "orthodox.h"
 
+//void promicro_bootloader_jmp(bool program);
 #include "quantum.h"
+
+//void promicro_bootloader_jmp(bool program);
 
 #define LAYOUT( \
 	L00, L01, L02, L03, L04, L05,                                  R00, R01, R02, R03, R04, R05, \
@@ -38,3 +42,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		{ R18, R17, R16, R15, R14, R13, R12, KC_NO, R10 }, \
 		{ R28, R27, R26, R25, R24, R23, R22, R21, R20 } \
 	}
+
+#endif
+

@@ -1,6 +1,9 @@
-#pragma once
+#ifndef CONFIG_USER_H
 
+#define CONFIG_USER_H
 #define TAPPING_TERM 200
-#define PERMISSIVE_HOLD
+#include "../../config.h"
+#define PERMISSIVE_HOLD 
+#define PREVENT_STUCK_MODIFIERS
 
-
+#endif

@@ -39,12 +39,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define DIODE_DIRECTION COL2ROW
 
 /* Set 0 if debouncing isn't needed */
-// #define DEBOUNCE 0
+#define DEBOUNCING_DELAY 50
 
 /* key combination for command */
 #define IS_COMMAND() ( \
     false \
 )
+
+/* prevent stuck modifiers */
+#define PREVENT_STUCK_MODIFIERS
 
 #ifdef RGBLIGHT_ENABLE
 #define RGB_DI_PIN F6

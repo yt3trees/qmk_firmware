@@ -47,7 +47,9 @@ enum mitosis_macros
 #define LAYER_TOGGLE_DELAY 900
 
 // Fillers to make layering more clear
+#define _______ KC_TRNS
 #define __MOD__ KC_TRNS
+#define XXXXXXX KC_NO
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_QWERTY] = LAYOUT( /* QWERTY adapted to this crazy thing */
@@ -117,6 +119,9 @@ float music_scale[][2]     = SONG(MUSIC_SCALE_SOUND);
 float tone_goodbye[][2] = SONG(GOODBYE_SOUND);
 #endif
 
+const uint16_t PROGMEM fn_actions[] = {
+
+};
 static uint16_t function_layer = _FUNCTIONMAC;
 static uint16_t key_timer;
 

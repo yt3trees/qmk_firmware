@@ -9,3 +9,6 @@ MOUSEKEY_ENABLE = no
 CONSOLE_ENABLE  = no # yes
 COMMAND_ENABLE  = no
 
+ifndef QUANTUM_DIR
+	include ../../../../Makefile
+endif

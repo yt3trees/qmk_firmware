@@ -1,6 +1,20 @@
 #include QMK_KEYBOARD_H
+#include "debug.h"
+#include "action_layer.h"
 #include "version.h"
-#include "layers.h"
+
+enum custom_layers {
+  _QWERTY,
+  _WORKMAN,
+  _DVORAK,
+  _COLEMAK,
+  _LOWER,
+  _RAISE,
+  _ADJUST,
+  _GAME,
+  _MOUSE,
+  _NUM,
+};
 
 enum custom_keycodes {
   QWERTY = SAFE_RANGE,
@@ -25,41 +39,41 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |  Tab   |  Q  |  W  |  E  |  R  |  T  |  [{  |           |  ]}  |  Y  |  U  |  I  |  O  |  P  |  BSPC  |
  * |--------+-----+-----+-----+-----+-----|      |           |      |-----+-----+-----+-----+-----+--------|
  * |  ESC   |  A  |  S  |  D  |  F  |  G  |------|           |------|  H  |  J  |  K  |  L  |  ;  |    '   |
- * |--------+-----+-----+-----+-----+-----|      |           |      |-----+-----+-----+-----+-----+--------|
+ * |--------+-----+-----+-----+-----+-----|  L1  |           |  L1  |-----+-----+-----+-----+-----+--------|
  * | LShift |  Z  |  X  |  C  |  V  |  B  |      |           |      |  N  |  M  |  ,  |  .  |  /  | Enter  |
  * `--------+-----+-----+-----+-----+------------'           `------------+-----+-----+-----+-----+--------'
  *   | Num  |Ctrl | Alt |LGUI |Lower|                                     |Raise|Left |Down | Up  |Right |
  *   `------------------------------'                                     `------------------------------'
  *                                   ,------------.          ,------------.
- *                                   |Play |      |          |      |Play |
- *                             ,-----|-----|------|          |------+-----+-----.
- *                             |     |     | Alt  |          | Alt  |     |     |
- *                             |Space|LOWER|------|          |------|RAISE|Space|
- *                             |     |     | LGUI |          | LGUI |     |     |
- *                             `------------------'          `------------------'
+ *                                   |Play |Mouse |          | Num  |Mouse|
+ *                              ,----|-----|------|          |------+-----+-----.
+ *                              |    |     | Alt  |          | Alt  |     |     |
+ *                              |BSPC|LOWER|------|          |------|RAISE|Space|
+ *                              |    |     | LGUI |          | LGUI |     |     |
+ *                              `-----------------'          `------------------'
  */
 [_QWERTY] = LAYOUT_ergodox(
   // left hand
   KC_GRV,   KC_1,    KC_2,    KC_3,    KC_4,  KC_5, KC_ESC,
   KC_TAB,   KC_Q,    KC_W,    KC_E,    KC_R,  KC_T, KC_LBRACKET,
   KC_ESC,   KC_A,    KC_S,    KC_D,    KC_F,  KC_G,
-  KC_LSFT,  KC_Z,    KC_X,    KC_C,    KC_V,  KC_B, _______,
+  KC_LSFT,  KC_Z,    KC_X,    KC_C,    KC_V,  KC_B, KC_FN1,
   TT(_NUM), KC_LCTL, KC_LALT, KC_LGUI, LOWER,
 
-                                                  KC_MPLY,  _______,
+                                                  KC_MPLY,  TG(_MOUSE),
                                                             KC_LALT,
-                                      KC_SPACE,   LOWER,    KC_LGUI,
+                                      KC_BSPACE,  LOWER,    KC_LGUI,
 
   // right hand
   KC_ESC,      KC_6, KC_7,  KC_8,    KC_9,    KC_0,                KC_DEL,
   KC_RBRACKET, KC_Y, KC_U,  KC_I,    KC_O,    KC_P,                KC_BSPACE,
                KC_H, KC_J,  KC_K,    KC_L,    KC_SCOLON,           KC_QUOTE,
-  _______,     KC_N, KC_M,  KC_COMM, KC_DOT,  LT(_MOUSE, KC_SLSH), RSFT_T(KC_ENT),
+  KC_FN1,      KC_N, KC_M,  KC_COMM, KC_DOT,  LT(_MOUSE, KC_SLSH), RSFT_T(KC_ENT),
                      RAISE, KC_LEFT, KC_DOWN, KC_UP,               KC_RIGHT,
 
-  _______, KC_MPLY,
+  TT(_NUM), TG(_MOUSE),
   KC_LALT,
-  KC_LGUI, RAISE,   KC_SPACE
+  KC_LGUI,  RAISE,      KC_SPACE
 ),
 
 /* Keymap 0: Basic Workman layer
@@ -70,41 +84,41 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |  Tab   |  Q  |  D  |  R  |  W  |  B  |  [{  |           |  ]}  |  J  |  F  |  U  |  P  |  ;  |  BSPC  |
  * |--------+-----+-----+-----+-----+-----|      |           |      |-----+-----+-----+-----+-----+--------|
  * |  ESC   |  A  |  S  |  H  |  T  |  G  |------|           |------|  Y  |  N  |  E  |  O  |  I  |    '   |
- * |--------+-----+-----+-----+-----+-----|      |           |      |-----+-----+-----+-----+-----+--------|
+ * |--------+-----+-----+-----+-----+-----|  L1  |           |  L1  |-----+-----+-----+-----+-----+--------|
  * | LShift |  Z  |  X  |  M  |  C  |  V  |      |           |      |  K  |  L  |  ,  |  .  |  /  | Enter  |
  * `--------+-----+-----+-----+-----+------------'           `------------+-----+-----+-----+-----+--------'
  *   | Num  |Ctrl | Alt |LGUI |Lower|                                     |Raise|Left |Down | Up  |Right |
  *   `------------------------------'                                     `------------------------------'
  *                                   ,------------.          ,------------.
- *                                   |Play |      |          |      |Play |
- *                             ,-----|-----|------|          |------+-----+-----.
- *                             |     |     | Alt  |          | Alt  |     |     |
- *                             |Space|LOWER|------|          |------|RAISE|Space|
- *                             |     |     | LGUI |          | LGUI |     |     |
- *                             `------------------'          `------------------'
+ *                                   |Play |Mouse |          | Num  |Mouse|
+ *                              ,----|-----|------|          |------+-----+-----.
+ *                              |    |     | Alt  |          | Alt  |     |     |
+ *                              |BSPC|LOWER|------|          |------|RAISE|Space|
+ *                              |    |     | LGUI |          | LGUI |     |     |
+ *                              `-----------------'          `------------------'
  */
 [_WORKMAN] = LAYOUT_ergodox(
   // left hand
   KC_GRV,   KC_1,    KC_2,    KC_3,    KC_4,    KC_5, KC_ESC,
   KC_TAB,   KC_Q,    KC_D,    KC_R,    KC_W,    KC_B, KC_LBRACKET,
   KC_ESC,   KC_A,    KC_S,    KC_H,    KC_T,    KC_G,
-  KC_LSFT,  KC_Z,    KC_X,    KC_M,    KC_C,    KC_V, _______,
+  KC_LSFT,  KC_Z,    KC_X,    KC_M,    KC_C,    KC_V, KC_FN1,
   TT(_NUM), KC_LCTL, KC_LALT, KC_LGUI, LOWER,
 
-                                                  KC_MPLY,  _______,
+                                                  KC_MPLY,  TG(_MOUSE),
                                                             KC_LALT,
-                                      KC_SPACE,   LOWER,    KC_LGUI,
+                                      KC_BSPACE,  LOWER,    KC_LGUI,
 
   // right hand
   KC_ESC,      KC_6, KC_7,  KC_8,    KC_9,    KC_0,                KC_DEL,
   KC_RBRACKET, KC_J, KC_F,  KC_U,    KC_P,    KC_SCOLON,           KC_BSPACE,
                KC_Y, KC_N,  KC_E,    KC_O,    KC_I,                KC_QUOTE,
-  _______,     KC_K, KC_L,  KC_COMM, KC_DOT,  LT(_MOUSE, KC_SLSH), RSFT_T(KC_ENT),
+  KC_FN1,      KC_K, KC_L,  KC_COMM, KC_DOT,  LT(_MOUSE, KC_SLSH), RSFT_T(KC_ENT),
                      RAISE, KC_LEFT, KC_DOWN, KC_UP,               KC_RIGHT,
 
-  _______, KC_MPLY,
+  TT(_NUM), TG(_MOUSE),
   KC_LALT,
-  KC_LGUI, RAISE,   KC_SPACE
+  KC_LGUI,  RAISE,      KC_SPACE
 ),
 
 /* Keymap 0: Basic Dvorak layer
@@ -115,41 +129,41 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |  Tab   |  '  |  ,  |  .  |  P  |  Y  |  [{  |           |  ]}  |  F  |  G  |  C  |  R  |  L  |  BSPC  |
  * |--------+-----+-----+-----+-----+-----|      |           |      |-----+-----+-----+-----+-----+--------|
  * |  ESC   |  A  |  O  |  E  |  U  |  I  |------|           |------|  D  |  H  |  T  |  N  |  S  |   /    |
- * |--------+-----+-----+-----+-----+-----|      |           |      |-----+-----+-----+-----+-----+--------|
+ * |--------+-----+-----+-----+-----+-----|  L1  |           |  L1  |-----+-----+-----+-----+-----+--------|
  * | LShift |  ;  |  Q  |  J  |  K  |  X  |      |           |      |  B  |  M  |  W  |  V  |  Z  | Enter  |
  * `--------+-----+-----+-----+-----+------------'           `------------+-----+-----+-----+-----+--------'
  *   | Num  |Ctrl | Alt |LGUI |Lower|                                     |Raise|Left |Down | Up  |Right |
  *   `------------------------------'                                     `------------------------------'
  *                                   ,------------.          ,------------.
- *                                   |Play |      |          |      |Play |
- *                             ,-----|-----|------|          |------+-----+-----.
- *                             |     |     | Alt  |          | Alt  |     |     |
- *                             |Space|LOWER|------|          |------|RAISE|Space|
- *                             |     |     | LGUI |          | LGUI |     |     |
- *                             `------------------'          `------------------'
+ *                                   |Play |Mouse |          | Num  |Mouse|
+ *                              ,----|-----|------|          |------+-----+-----.
+ *                              |    |     | Alt  |          | Alt  |     |     |
+ *                              |BSPC|LOWER|------|          |------|RAISE|Space|
+ *                              |    |     | LGUI |          | LGUI |     |     |
+ *                              `-----------------'          `------------------'
  */
 [_DVORAK] = LAYOUT_ergodox(
   // left hand
   KC_GRV,   KC_1,      KC_2,    KC_3,    KC_4,  KC_5, KC_ESC,
   KC_TAB,   KC_QUOT,   KC_COMM, KC_DOT,  KC_P,  KC_Y, KC_LBRACKET,
   KC_ESC,   KC_A,      KC_O,    KC_E,    KC_U,  KC_I,
-  KC_LSFT,  KC_SCOLON, KC_Q,    KC_J,    KC_K,  KC_X, _______,
+  KC_LSFT,  KC_SCOLON, KC_Q,    KC_J,    KC_K,  KC_X, KC_FN1,
   TT(_NUM), KC_LCTL,   KC_LALT, KC_LGUI, LOWER,
 
-                                                  KC_MPLY,  _______,
+                                                  KC_MPLY,  TG(_MOUSE),
                                                             KC_LALT,
-                                      KC_SPACE,   LOWER,    KC_LGUI,
+                                      KC_BSPACE,  LOWER,    KC_LGUI,
 
   // right hand
   KC_ESC,      KC_6, KC_7,  KC_8,    KC_9,    KC_0,  KC_DEL,
   KC_RBRACKET, KC_F, KC_G,  KC_C,    KC_R,    KC_L,  KC_BSPACE,
                KC_D, KC_H,  KC_T,    KC_N,    KC_S,  LT(MOUSE, KC_SLSH),
-  _______,     KC_B, KC_M,  KC_W,    KC_V,    KC_Z,  RSFT_T(KC_ENT),
+  KC_FN1,      KC_B, KC_M,  KC_W,    KC_V,    KC_Z,  RSFT_T(KC_ENT),
                      RAISE, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT,
 
-  _______, KC_MPLY,
+  TT(_NUM), TG(_MOUSE),
   KC_LALT,
-  KC_LGUI, RAISE,   KC_SPACE
+  KC_LGUI,  RAISE,      KC_SPACE
 ),
 
 /* Keymap 0: Basic Colemak layer
@@ -160,41 +174,41 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |  Tab   |  Q  |  W  |  F  |  P  |  G  |  [{  |           |  ]}  |  J  |  L  |  U  |  Y  |  ;  |  BSPC  |
  * |--------+-----+-----+-----+-----+-----|      |           |      |-----+-----+-----+-----+-----+--------|
  * |  ESC   |  A  |  R  |  S  |  T  |  D  |------|           |------|  H  |  N  |  E  |  I  |  O  |    '   |
- * |--------+-----+-----+-----+-----+-----|      |           |      |-----+-----+-----+-----+-----+--------|
+ * |--------+-----+-----+-----+-----+-----|  L1  |           |  L1  |-----+-----+-----+-----+-----+--------|
  * | LShift |  Z  |  X  |  C  |  V  |  B  |      |           |      |  K  |  M  |  ,  |  .  |  /  | Enter  |
  * `--------+-----+-----+-----+-----+------------'           `------------+-----+-----+-----+-----+--------'
  *   | Num  |Ctrl | Alt |LGUI |Lower|                                     |Raise|Left |Down | Up  |Right |
  *   `------------------------------'                                     `------------------------------'
  *                                   ,------------.          ,------------.
- *                                   |Play |      |          |      |Play |
- *                             ,-----|-----|------|          |------+-----+-----.
- *                             |     |     | Alt  |          | Alt  |     |     |
- *                             |Space|LOWER|------|          |------|RAISE|Space|
- *                             |     |     | LGUI |          | LGUI |     |     |
- *                             `------------------'          `------------------'
+ *                                   |Play |Mouse |          | Num  |Mouse|
+ *                              ,----|-----|------|          |------+-----+-----.
+ *                              |    |     | Alt  |          | Alt  |     |     |
+ *                              |BSPC|LOWER|------|          |------|RAISE|Space|
+ *                              |    |     | LGUI |          | LGUI |     |     |
+ *                              `-----------------'          `------------------'
  */
 [_COLEMAK] = LAYOUT_ergodox(
   // left hand
   KC_GRV,   KC_1,    KC_2,    KC_3,    KC_4,    KC_5, KC_ESC,
   KC_TAB,   KC_Q,    KC_W,    KC_F,    KC_P,    KC_G, KC_LBRACKET,
   KC_ESC,   KC_A,    KC_R,    KC_S,    KC_T,    KC_D,
-  KC_LSFT,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B, _______,
+  KC_LSFT,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B, KC_FN1,
   TT(_NUM), KC_LCTL, KC_LALT, KC_LGUI, LOWER,
 
-                                                  KC_MPLY,  _______,
+                                                  KC_MPLY,  TG(_MOUSE),
                                                             KC_LALT,
-                                      KC_SPACE,   LOWER,    KC_LGUI,
+                                      KC_BSPACE,  LOWER,    KC_LGUI,
 
   // right hand
   KC_ESC,      KC_6, KC_7,  KC_8,    KC_9,    KC_0,                KC_DEL,
   KC_RBRACKET, KC_J, KC_L,  KC_U,    KC_Y,    KC_SCOLON,           KC_BSPACE,
                KC_H, KC_N,  KC_E,    KC_I,    KC_O,                KC_QUOTE,
-  _______,     KC_K, KC_M,  KC_COMM, KC_DOT,  LT(_MOUSE, KC_SLSH), RSFT_T(KC_ENT),
+  KC_FN1,      KC_K, KC_M,  KC_COMM, KC_DOT,  LT(_MOUSE, KC_SLSH), RSFT_T(KC_ENT),
                      RAISE, KC_LEFT, KC_DOWN, KC_UP,               KC_RIGHT,
 
-  _______, KC_MPLY,
+  TT(_NUM), TG(_MOUSE),
   KC_LALT,
-  KC_LGUI, RAISE,   KC_SPACE
+  KC_LGUI,  RAISE,      KC_SPACE
 ),
 
 /* Lower
@@ -202,19 +216,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,---------------------------------------------------.           ,--------------------------------------------------.
  * | Version |  F1  |  F2  |  F3  |  F4  |  F5  | F11  |           | F12  |  F6  |  F7  |  F8  |  F9  | F10  |        |
  * |---------+------+------+------+------+------+------|           |------+------+------+------+------+------+--------|
- * |    ~    |  !   |  @   |  #   |  $   |  %   |  F6  |           |  F5  |  ^   |  &   |  *   |  (   |  )   |        |
+ * |    ~    |  !   |  @   |  #   |  $   |  %   |      |           |      |  ^   |  &   |  *   |  (   |  )   |        |
  * |---------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
  * |   Del   |  F1  |  F2  |  F3  |  F4  |  F5  |------|           |------|  F6  |  _   |  +   |  {   |  }   |   |    |
- * |---------+------+------+------+------+------| F12  |           | F11  |------+------+------+------+------+--------|
+ * |---------+------+------+------+------+------|  L2  |           |  L2  |------+------+------+------+------+--------|
  * |         |  F7  |  F8  |  F9  | F10  | F11  |      |           |      | F12  |ISO ~ |ISO | | Home | End  |        |
  * `---------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
  *   |       |      |      |      |      |                                       |      | Play | Vol- | Vol+ | Next |
  *   `-----------------------------------'                                       `----------------------------------'
  *                                       ,-------------.           ,-------------.
- *                                       |      |      |           |      |      |
+ *                                       |Animat|      |           |Toggle|Solid |
  *                                ,------|------|------|           |------+------+------.
- *                                |      |      |      |           |      |      |      |
- *                                |      |      |------|           |------|      |      |
+ *                                |Bright|Bright|      |           |      |Hue-  |Hue+  |
+ *                                |ness- |ness+ |------|           |------|      |      |
  *                                |      |      |      |           |      |      |      |
  *                                `--------------------'           `--------------------'
  */
@@ -247,10 +261,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,---------------------------------------------------.           ,--------------------------------------------------.
  * | Version |  F1  |  F2  |  F3  |  F4  |  F5  | F11  |           | F12  |  F6  |  F7  |  F8  |  F9  | F10  |  F11   |
  * |---------+------+------+------+------+------+------|           |------+------+------+------+------+------+--------|
- * |    `    |  1   |  2   |  3   |  4   |  5   |  F6  |           |  F5  |  6   |  7   |  8   |  9   |  0   |        |
+ * |    `    |  1   |  2   |  3   |  4   |  5   |      |           |      |  6   |  7   |  8   |  9   |  0   |        |
  * |---------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
  * |   Del   |  F1  |  F2  |  F3  |  F4  |  F5  |------|           |------|  F6  |  -   |  =   |  [   |  ]   |   \    |
- * |---------+------+------+------+------+------| F12  |           | F11  |------+------+------+------+------+--------|
+ * |---------+------+------+------+------+------|  L2  |           |  L2  |------+------+------+------+------+--------|
  * |         |  F7  |  F8  |  F9  | F10  | F11  |      |           |      | F12  |ISO # |ISO / |Pg Up |Pg Dn |        |
  * `---------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
  *   |       |      |      |      |      |                                       |      | Play | Vol- | Vol+ | Next |
@@ -294,7 +308,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
  * |        |Reset |Debug |      |      |      |      |           |      |      |TRM on|TRMoff|      |      |  Del   |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * | CPSLCK |      |      |      |      |AG Nrm|------|           |------|AG Swp|QWERTY|Wrkman|Dvorak|Colmak|        |
+ * | CPSLCK |      |      |      |      |AG Nrm|------|           |------|AG Swp|QWERTY|Wrkman|Dvorak|      |        |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
  * |        |      |      |      |      |      |      |           |      |      |      | Prev | Next |      |        |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
@@ -311,7 +325,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_ADJUST] = LAYOUT_ergodox(
   // left hand
   VRSN,    _______, _______, _______, _______, _______, _______,
-  _______, RESET,   DEBUG,   BL_TOGG, BL_STEP, _______, _______,
+  _______, RESET,   DEBUG,   _______, _______, _______, _______,
   KC_CAPS, _______, _______, _______, _______, AG_NORM,
   _______, _______, _______, _______, _______, _______, _______,
   _______, _______, _______, _______, _______,
@@ -488,11 +502,6 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
   return MACRO_NONE;
 };
 
-void matrix_init_user() {
-  backlight_enable();
-  backlight_level(BACKLIGHT_LEVELS);
-}
-
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case QWERTY:
@@ -567,3 +576,34 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
   return true;
 }
+
+/**
+ * Runs just one time when the keyboard initializes.
+ */
+void matrix_init_user(void) {
+
+};
+
+/**
+ * Runs constantly in the background, in a loop.
+ */
+void matrix_scan_user(void) {
+  uint8_t layer = biton32(layer_state);
+
+  ergodox_board_led_off();
+  ergodox_led_lower_off();
+  ergodox_led_raise_off();
+  ergodox_led_adjust_off();
+
+  switch (layer) {
+    case _LOWER:
+      ergodox_led_lower_on();
+      break;
+    case _RAISE:
+      ergodox_led_raise_on();
+      break;
+    case _ADJUST:
+      ergodox_led_adjust_on();
+      break;
+  }
+};

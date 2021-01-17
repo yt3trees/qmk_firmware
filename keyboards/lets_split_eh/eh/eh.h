@@ -1,4 +1,5 @@
-#pragma once
+#ifndef EH_H
+#define EH_H
 
 #include "lets_split_eh.h"
 
@@ -22,3 +23,5 @@
 	}
     
 #define LAYOUT_ortho_4x12 LAYOUT
+
+#endif

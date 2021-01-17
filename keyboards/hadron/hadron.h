@@ -7,9 +7,7 @@
 #ifdef SUBPROJECT_ver2
     #include "ver2.h"
 #endif
-#ifdef SUBPROJECT_ver3
-    #include "ver3.h"
-#endif
+
 #include "quantum.h"
 
 

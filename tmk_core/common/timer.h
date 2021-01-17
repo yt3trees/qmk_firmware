@@ -19,17 +19,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define TIMER_H 1
 
 #include <stdint.h>
-#include <stdbool.h>
 
 #if defined(__AVR__)
-#    include "avr/timer_avr.h"
+#include "avr/timer_avr.h"
 #endif
 
-#define TIMER_DIFF(a, b, max) ((max == UINT8_MAX) ? ((uint8_t)((a) - (b))) : ((max == UINT16_MAX) ? ((uint16_t)((a) - (b))) : ((max == UINT32_MAX) ? ((uint32_t)((a) - (b))) : ((a) >= (b) ? (a) - (b) : (max) + 1 - (b) + (a)))))
-#define TIMER_DIFF_8(a, b) TIMER_DIFF(a, b, UINT8_MAX)
-#define TIMER_DIFF_16(a, b) TIMER_DIFF(a, b, UINT16_MAX)
-#define TIMER_DIFF_32(a, b) TIMER_DIFF(a, b, UINT32_MAX)
-#define TIMER_DIFF_RAW(a, b) TIMER_DIFF_8(a, b)
+
+#define TIMER_DIFF(a, b, max)   ((a) >= (b) ?  (a) - (b) : (max) - (b) + (a))
+#define TIMER_DIFF_8(a, b)      TIMER_DIFF(a, b, UINT8_MAX)
+#define TIMER_DIFF_16(a, b)     TIMER_DIFF(a, b, UINT16_MAX)
+#define TIMER_DIFF_32(a, b)     TIMER_DIFF(a, b, UINT32_MAX)
+#define TIMER_DIFF_RAW(a, b)    TIMER_DIFF_8(a, b)
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -37,8 +38,9 @@ extern "C" {
 
 extern volatile uint32_t timer_count;
 
-void     timer_init(void);
-void     timer_clear(void);
+
+void timer_init(void);
+void timer_clear(void);
 uint16_t timer_read(void);
 uint32_t timer_read32(void);
 uint16_t timer_elapsed(uint16_t last);

@@ -1,7 +1,6 @@
 
 MOUSEKEY_ENABLE = yes
 EXTRAKEY_ENABLE = yes
-RGBLIGHT_ENABLE = yes   # Enable keyboard underlight functionality
 
 MIDI_ENABLE = yes
 

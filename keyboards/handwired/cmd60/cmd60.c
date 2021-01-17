@@ -1,4 +1,4 @@
-#include "cmd60.h"
+#include "CMD60.h"
 
 void matrix_init_kb(void) {
 	// put your keyboard start-up code here

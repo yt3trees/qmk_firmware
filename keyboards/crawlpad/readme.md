@@ -1,6 +1,6 @@
 # Crawlpad
 
-![Crawlpad](https://i.imgur.com/8BnztWo.jpg)
+![Crawlpad](https://imgur.com/8BnztWo)
 
 A 4x4 macropad/numpad, exclusively availabe at Keycrawl events.
 
@@ -12,4 +12,6 @@ Make example for this keyboard (after setting up your build environment):
 
     make crawlpad:default
 
-See the [build environment setup](https://docs.qmk.fm/#/getting_started_build_tools) and the [make instructions](https://docs.qmk.fm/#/getting_started_make_guide) for more information. Brand new to QMK? Start with our [Complete Newbs Guide](https://docs.qmk.fm/#/newbs).
+See [build environment setup](https://docs.qmk.fm/build_environment_setup.html) then the [make instructions](https://docs.qmk.fm/make_instructions.html) for more information.
+
+For those that prefer a GUI tool, the crawlpad.json file in this repo can be used on [kbfirmware.com](http://kbfirmware.com).

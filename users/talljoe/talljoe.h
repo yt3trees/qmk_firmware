@@ -1,31 +1,14 @@
-/* Copyright 2020 Joseph Wasson
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+#ifndef USERSPACE
+#define USERSPACE
 
-#pragma once
-
-#include QMK_KEYBOARD_H
-#include "tapdance/tapdance.h"
-#include "macros.h"
+#include "quantum.h"
 
 enum userspace_custom_keycodes {
   KC_MAKE = SAFE_RANGE, // can always be here
   DFAULTS,
   TOGGLE_BACKLIGHT,
   EFFECT,
-  EFFECT_END = EFFECT + 20
+  EFFECT_END = EFFECT + 10
 };
 
 #ifndef RESET_LAYER
@@ -38,8 +21,6 @@ enum layers {
     _NORMAN,
     _DVORAK,
     _COLMAK,
-    _MALTROFF,
-    _NORTRON,
     _GAME,
     _NAV,
     _NUM,
@@ -47,15 +28,17 @@ enum layers {
     _RESET = RESET_LAYER,
 };
 
-#ifdef VISUALIZER_ENABLE
-  extern const char layer_names[][16];
-#endif
+enum tap_dancers {
+  TD_SEMICOLON
+};
+
+#define _______ KC_TRNS
+#define XXXXXXX KC_NO
 
 #define MO_NAV    MO(_NAV)
-#define MO_ADJ    TD(TD_FUNCTION)
+#define MO_ADJ    MO(_ADJUST)
 #define MO_RST    MO(_RESET)
 #define TG_ADJ    TG(_ADJUST)
-#define TG_NUM    TG(_NUM)
 #ifdef ENABLE_GAME_LAYER
   #define TG_GAME TG(_GAME)
 #else
@@ -66,46 +49,47 @@ enum layers {
 #define LY_NRMN   DF(_NORMAN)
 #define LY_DVRK   DF(_DVORAK)
 #define LY_CLMK   DF(_COLMAK)
-#if SPACE_COUNT >= 2
-  #define LY_MALT DF(_MALTROFF)
-  #define LY_NTRN DF(_NORTRON)
-#else
-  #define LY_MALT KC_NO
-  #define LY_NTRN KC_NO
-#endif
 #define TG_NKRO   MAGIC_TOGGLE_NKRO
 #define KC_PTT    KC_F24
 #define MS_MID    KC_MS_BTN3
 #define FX(x)     (EFFECT + x)
 
-#define CTL_ESC   CTL_T(KC_ESC)
-#define US_ENT    RCTL_T(KC_ENT)
+#define US_CAPS   CTL_T(KC_ESC)
+#define US_QUOT   RCTL_T(KC_QUOT)
 #define US_MINS   RCTL_T(KC_QUOT)
-#define US_BSLS   LCA_T(KC_BSLS)
 #define US_SCLN   TD(TD_SEMICOLON)
-#define US_GRV    TD(TD_GRAVE)
-#define US_TAB    C_S_T(KC_TAB)
-#define SH_LBRC   LSFT_T(KC_LBRC)
-#define SH_RBRC   RSFT_T(KC_RBRC)
-#define US_LOCK   TD(TD_LOCK)
+#define US_ENT    LT(_NUM, KC_ENT)
 
-#define MLT_E     LT(_NUM, KC_E)
-
-#ifndef SWAP_HANDS_ENABLE
-#define SH_T
+#ifndef SPACE_COUNT
+  #define SPACE_COUNT 1
 #endif
+#if (SPACE_COUNT == 1)
+  #define KC_SPC1   LT(_NAV, KC_SPC)
+  #define KC_SPC2   XXXXXXX
+  #define KC_SPC3   XXXXXXX
 
-#define KC_SPC1   LT(_NAV,KC_SPC)
-#define KC_SPC2   LT(_NUM,KC_ENT)
-#define KC_SPC3   SH_T(KC_BSPC)
+  #define NV_SPC1   _______
+  #define NV_SPC2   _______
+  #define NV_SPC3   _______
 
-#define NV_SPC1   KC_SPC
-#define NV_SPC2   KC_ENT
-#define NV_SPC3   KC_SPC
+  #define NM_SPC1   _______
+  #define NM_SPC2   _______
+  #define NM_SPC3   _______
+#elif (SPACE_COUNT == 3)
+  #define KC_SPC1   KC_BSPC
+  #define KC_SPC2   LT(_NUM,KC_ENT)
+  #define KC_SPC3   LT(_NAV,KC_SPC)
 
-#define NM_SPC1   KC_0
-#define NM_SPC2   XXXXXXX
-#define NM_SPC3   KC_SPC
+  #define NV_SPC1   KC_SPC
+  #define NV_SPC2   C_S_T(KC_ENT)
+  #define NV_SPC3   KC_SPC
+
+  #define NM_SPC2   XXXXXXX
+  #define NM_SPC1   KC_SPC
+  #define NM_SPC3   KC_0
+#else
+  #error "Unsupported space count:" SPACE_COUNT
+#endif
 
 #ifndef ZEAL_RGB
   #define BR_INC KC_NO
@@ -126,7 +110,7 @@ enum layers {
   #define FN_MO2 KC_NO
 #endif
 
-#ifndef TEMPLATE
+#ifdef TEMPLATE_TKL
   #define _X_ KC_NO
   #define TEMPLATE( \
     KJ4, KJ7, KI7, KH7, KG7, KG4, KF4, KF7, KE7, KD7, KR7, KR4, KE4, KB2, KJ6,      \
@@ -142,8 +126,7 @@ enum layers {
     KN2,      KJ1, KI1, KH1, KG1, KG0, KF0, KF1, KE1, KD1, KR0,      KN3,        _X_,      \
     KA4, KP2, KC6,           KX1, KK6, KX2,           KC0, KM3, KD0, KA1,   _X_, _X_, _X_  \
   )
-#endif
-#ifndef TEMPLATE_TKL
+#else
   #define TEMPLATE_TKL( \
     KJ6,      KI4, KH4, KH2, KH6, KA7, KE6, KD2, KD4, KB4, KB7, KB6, KB0,   KC7, KC5, KA5, \
     KJ4, KJ7, KI7, KH7, KG7, KG4, KF4, KF7, KE7, KD7, KR7, KR4, KE4, KB2,   KL4, KO4, KQ4, \
@@ -160,24 +143,4 @@ enum layers {
   )
 #endif
 
-#ifndef TEMPLATE_ALT
-  #define TEMPLATE_ALT TEMPLATE
-#endif
-#ifndef TEMPLATE_NUM
-  #define TEMPLATE_NUM TEMPLATE_ALT
-#endif
-#ifndef TEMPLATE_NAV
-  #define TEMPLATE_NAV TEMPLATE_ALT
-#endif
-#ifndef TEMPLATE_ADJUST
-  #define TEMPLATE_ADJUST TEMPLATE_ALT
-#endif
-
-#ifndef TEMPLATE_RESET
-  #define TEMPLATE_RESET TEMPLATE_ALT( \
-      RESET  , XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, RESET  ,  \
-      RESET  , XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, RESET  ,           \
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,           \
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX, XXXXXXX,           \
-      RESET  , XXXXXXX, XXXXXXX,                   XXXXXXX, RESET  , XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX)
 #endif
